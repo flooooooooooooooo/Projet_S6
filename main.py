@@ -5,7 +5,7 @@ import os
 
 
 def open_input_file():
-    with open("input.txt", "r") as f:
+    with open(r"C:\Users\avene\Documents\code\programme_complet\projet_calcul_scientifique\projet_S6\input.txt", "r") as f:
         text = f.readlines()
 
     for line in text:
