@@ -29,7 +29,7 @@ def open_input_file():
     
     return C_0, L, x_d, x_f, D, N_x, t_fin, N_t
 
-def initialize_data(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
+def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     dt = t_fin / (N_t + 1)
     dx = L / (N_x + 1)
     x = 0
@@ -48,7 +48,11 @@ def initialize_data(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     
     return dt, dx, x, t, C, R
 
-def solve_concentration(N_t, N_x, R, C):
+def initialize_data_exact_solving(N_x):
+    C_verif = np.zeros((N_x+1,N_t+1))
+    return C_verif
+
+def solve_concentration_numericaly(N_t, N_x, R, C):
     for i in range(0,N_t):
         for j in range(0,N_x + 1):
             if j == 0:
@@ -59,40 +63,32 @@ def solve_concentration(N_t, N_x, R, C):
                 C[j,i+1] = R *C[j-1,i] + (1 - 2 * R) * C[j,i] + R * C[j+1,i]
     return C
 
+def solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D):
+    x = 0
+    t = 0
+    for j in range(0,N_t+1):
+        for i in range(0,N_x+1):
+            x = i * dx
+            C_verif[i,j] = 1 - math.erf(x/(2*math.sqrt(D*(t))))
+        t = j * dt
+    return C_verif
 
-C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
-dt, dx, x, t, C, R = initialize_data(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
-C = solve_concentration(N_t, N_x, R, C)
+def initialize_output_file():
+    if os.path.isdir("output") == False:
+        os.mkdir("output")
 
+def plot_concentration(C, N_t):
+    for i in range(0,N_t+1):
+        plt.plot(C[:,i])
+        plt.savefig("output/C_{}.png".format(i))
+        plt.clf()
 
-
-
-
-
-"""
-if os.path.isdir("output") == False:
-    os.mkdir("output")
-
-
-for i in range(0,N_t+1):
-    plt.plot(C[:,i])
-    plt.savefig("output/C_{}.png".format(i))
+def plot_numerical_exact_comparison(C_verif, C):
+    plt.plot(C_verif[:,N_t])
+    plt.plot(C[:,N_t])
+    plt.savefig("output/numerical_exact_comparison.png")
     plt.clf()
 
-
-C_verif = np.zeros(101)
-
-for i in range(0,100):
-    x = i * dx
-    C_verif[i] = 1 - math.erf(x/(2*math.sqrt(D*(t_fin))))
-
-x_verif = np.linspace(0,L,101)
-plt.plot(x_verif,C_verif)
-x_verif = np.linspace(0,L,N_x+1)
-plt.plot(x_verif,C[:,N_t])"""
-
-#plt.matshow(C)
-
-print(R)
-plt.plot(C[:,N_t])
-plt.show()
+C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
+dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
+C = solve_concentration_numericaly(N_t, N_x, R, C)
