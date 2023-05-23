@@ -5,6 +5,7 @@ import os
 
 
 def open_input_file():
+    """Ouvre le fichier input et met les informations dans chaque variables"""
     with open(r"C:\Users\avene\Documents\code\programme_complet\projet_calcul_scientifique\projet_S6\input.txt", "r") as f:
         text = f.readlines()
 
@@ -30,6 +31,7 @@ def open_input_file():
     return C_0, L, x_d, x_f, D, N_x, t_fin, N_t
 
 def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
+    """Initialise les données pour la résolution du schéma numérique"""
     dt = t_fin / (N_t + 1)
     dx = L / (N_x + 1)
     x = 0
@@ -49,10 +51,12 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     return dt, dx, x, t, C, R
 
 def initialize_data_exact_solving(N_x):
+    """Initialise les données pour la résolution exacte"""
     C_verif = np.zeros((N_x+1,N_t+1))
     return C_verif
 
 def solve_concentration_numericaly(N_t, N_x, R, C):
+    """Résout le schéma numérique"""
     for i in range(0,N_t):
         for j in range(0,N_x + 1):
             if j == 0:
@@ -64,6 +68,7 @@ def solve_concentration_numericaly(N_t, N_x, R, C):
     return C
 
 def solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D):
+    """Calcul la solution exacte du problème"""
     x = 0
     t = 0
     for j in range(0,N_t+1):
@@ -74,21 +79,27 @@ def solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D):
     return C_verif
 
 def initialize_output_file():
+    """Initialise le dossier output"""
     if os.path.isdir("output") == False:
         os.mkdir("output")
 
 def plot_concentration(C, N_t):
+    """Plot la concentration en fonction du temps"""
     for i in range(0,N_t+1):
         plt.plot(C[:,i])
         plt.savefig("output/C_{}.png".format(i))
         plt.clf()
 
 def plot_numerical_exact_comparison(C_verif, C):
+    """Plot la comparaison entre la solution exacte et la solution numérique"""
     plt.plot(C_verif[:,N_t])
     plt.plot(C[:,N_t])
     plt.savefig("output/numerical_exact_comparison.png")
     plt.clf()
 
+"""Main"""
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 C = solve_concentration_numericaly(N_t, N_x, R, C)
+initialize_output_file()
+plot_concentration(C, N_t)
