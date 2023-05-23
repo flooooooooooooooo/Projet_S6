@@ -34,7 +34,6 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     """Initialise les données pour la résolution du schéma numérique"""
     dt = t_fin / N_t
     dx = L / N_x
-    print(dx, dx * N_x, L)
     x = 0
     t = 0
     C = np.zeros((N_x,N_t))
@@ -48,6 +47,7 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
             C[i,0] = C_0
         else:
             C[i,0] = 0
+    
     
     return dt, dx, x, t, C, R
 
@@ -64,7 +64,7 @@ def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
             if j == 0:
                 """w = 10*math.pi/t_fin
                 C[j,i+1] = 1 + 1*math.sin(w*t)""" # potentiel fonction
-                C[j,i+1] = 0 # potentiel fonction
+                C[j,i+1] = 1 # potentiel fonction
             elif j == N_x -1:
                 C[j,i+1] = 0 # potentiel fonction
             else:
@@ -113,10 +113,11 @@ def plot_numerical_exact_comparison(C_verif, C):
 def video_concentration():
     subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
 
-def end_plot(C,N_t):
-
-    plt.plot(C[:,N_t-1])
-    plt.title("Concentration en fonction de la position à t = 1000 s")
+def end_plot(C,N_t,N_x):
+    """Plot la concentration en fonction de la position à t = 1000 s"""
+    x_coord = np.linspace(0,1000,N_x)
+    plt.plot(x_coord,C[:,N_t-1])
+    plt.title("Concentration en fonction de la position à t = 1000000 s")
     plt.xlabel("Position")
     plt.ylabel("Concentration")
     plt.show()
@@ -125,11 +126,11 @@ def end_plot(C,N_t):
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
-C_verif = initialize_data_exact_solving(N_x)
+#C_verif = initialize_data_exact_solving(N_x)
 #C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
 #diff = difference_exact_numerique(C_verif,C,N_t,N_x)
-initialize_output_file()
+#initialize_output_file()
 #plot_numerical_exact_comparison(C_verif, C)
-end_plot(C,N_t)
+end_plot(C,N_t,N_x)
 
 
