@@ -36,10 +36,11 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     dx = L / (N_x + 1)
     x = 0
     t = 0
-    C = np.zeros((N_x+1,N_t+1))
+    C = np.zeros((N_x,N_t))
+    print(C.shape)
     R = D * dt / (dx ** 2)
 
-    for i in range(0,N_x+1):
+    for i in range(0,N_x):
         x = i * dx
         if x - x_d < 0 and x - x_f < 0:
             C[i,0] = 0
@@ -52,18 +53,19 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
 
 def initialize_data_exact_solving(N_x):
     """Initialise les données pour la résolution exacte"""
-    C_verif = np.zeros((N_x+1,N_t+1))
+    C_verif = np.zeros((N_x,N_t))
     return C_verif
 
 def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
     """Résout le schéma numérique"""
-    for i in range(0,N_t):
+    for i in range(0,N_t-1):
         t = i * dt
-        for j in range(0,N_x + 1):
+        for j in range(0,N_x):
             if j == 0:
-                w = 10*math.pi/t_fin
-                C[j,i+1] = 1 + 1*math.sin(w*t) # potentiel fonction
-            elif j == N_x:
+                """w = 10*math.pi/t_fin
+                C[j,i+1] = 1 + 1*math.sin(w*t)""" # potentiel fonction
+                C[j,i+1] = 1 # potentiel fonction
+            elif j == N_x -1:
                 C[j,i+1] = 0 # potentiel fonction
             else:
                 C[j,i+1] = R *C[j-1,i] + (1 - 2 * R) * C[j,i] + R * C[j+1,i]
@@ -73,12 +75,21 @@ def solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D):
     """Calcul la solution exacte du problème"""
     x = 0
     t = 0
-    for j in range(0,N_t+1):
-        for i in range(0,N_x+1):
+    for j in range(1,N_t):
+        t = j * dt
+        for i in range(0,N_x):
             x = i * dx
             C_verif[i,j] = 1 - math.erf(x/(2*math.sqrt(D*(t))))
-        t = j * dt
+        
     return C_verif
+
+def difference_exact_numerique(C_verif,C,N_t,N_x):
+    """Calcul la différence entre la solution exacte et la solution numérique"""
+    diff = np.zeros((N_x,N_t))
+    for i in range(0,N_t):
+        for j in range(0,N_x):
+            diff[j,i] = C_verif[j,i] - C[j,i]
+    return diff
 
 def initialize_output_file():
     """Initialise le dossier output"""
@@ -94,18 +105,26 @@ def plot_concentration(C, N_t):
 
 def plot_numerical_exact_comparison(C_verif, C):
     """Plot la comparaison entre la solution exacte et la solution numérique"""
-    plt.plot(C_verif[:,N_t])
-    plt.plot(C[:,N_t])
+    plt.plot(C_verif[:,N_t-1])
+    plt.plot(C[:,N_t-1])
     plt.savefig("output/numerical_exact_comparison.png")
     plt.clf()
 
 def video_concentration():
     subprocess.call("ffmpeg -s 800x600 -i output/C_%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
 
+def end_plot(C,N_t):
+    plt.plot(C[:,N_t-1])
+    plt.show()
+
 """Main"""
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
-initialize_output_file()
-plot_concentration(C, N_t)
-video_concentration()
+C_verif = initialize_data_exact_solving(N_x)
+C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
+diff = difference_exact_numerique(C_verif,C,N_t,N_x)
+plot_numerical_exact_comparison(C_verif, C)
+end_plot(diff,N_t)
+
+
