@@ -6,7 +6,7 @@ import subprocess
 
 def open_input_file():
     """Ouvre le fichier input et met les informations dans chaque variables"""
-    with open(r"C:\Users\avene\Documents\code\programme_complet\projet_calcul_scientifique\projet_S6\input.txt", "r") as f:
+    with open(r"input.txt", "r") as f:
         text = f.readlines()
 
     for line in text:
@@ -111,7 +111,7 @@ def plot_numerical_exact_comparison(C_verif, C):
     plt.clf()
 
 def video_concentration():
-    subprocess.call("ffmpeg -s 800x600 -i output/C_%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
+    subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
 
 def end_plot(C,N_t):
     plt.plot(C[:,N_t-1])
