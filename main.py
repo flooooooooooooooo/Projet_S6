@@ -62,7 +62,7 @@ def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
         for j in range(0,N_x + 1):
             if j == 0:
                 w = 10*math.pi/t_fin
-                C[j,i+1] = 1*1*math.sin(w*t) # potentiel fonction
+                C[j,i+1] = 1 + 1*math.sin(w*t) # potentiel fonction
             elif j == N_x:
                 C[j,i+1] = 0 # potentiel fonction
             else:
