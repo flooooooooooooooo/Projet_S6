@@ -2,7 +2,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import os
-
+import subprocess
 
 def open_input_file():
     """Ouvre le fichier input et met les informations dans chaque variables"""
@@ -55,12 +55,14 @@ def initialize_data_exact_solving(N_x):
     C_verif = np.zeros((N_x+1,N_t+1))
     return C_verif
 
-def solve_concentration_numericaly(N_t, N_x, R, C):
+def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
     """Résout le schéma numérique"""
     for i in range(0,N_t):
+        t = i * dt
         for j in range(0,N_x + 1):
             if j == 0:
-                C[j,i+1] = 0 # potentiel fonction
+                w = 10*math.pi/t_fin
+                C[j,i+1] = 1*1*math.sin(w*t) # potentiel fonction
             elif j == N_x:
                 C[j,i+1] = 0 # potentiel fonction
             else:
@@ -87,7 +89,7 @@ def plot_concentration(C, N_t):
     """Plot la concentration en fonction du temps"""
     for i in range(0,N_t+1):
         plt.plot(C[:,i])
-        plt.savefig("output/C_{}.png".format(i))
+        plt.savefig("output/C_000{}.png".format(i))
         plt.clf()
 
 def plot_numerical_exact_comparison(C_verif, C):
@@ -97,9 +99,13 @@ def plot_numerical_exact_comparison(C_verif, C):
     plt.savefig("output/numerical_exact_comparison.png")
     plt.clf()
 
+def video_concentration():
+    subprocess.call("ffmpeg -s 800x600 -i output/C_%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
+
 """Main"""
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
-C = solve_concentration_numericaly(N_t, N_x, R, C)
+C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
 initialize_output_file()
 plot_concentration(C, N_t)
+video_concentration()
