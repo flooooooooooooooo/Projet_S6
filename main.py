@@ -3,6 +3,8 @@ import math
 import matplotlib.pyplot as plt
 import os
 import subprocess
+import concurrent.futures
+from functools import partial
 
 def open_input_file():
     """Ouvre le fichier input et met les informations dans chaque variables"""
@@ -36,7 +38,7 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     dx = L / N_x
     x = 0
     t = 0
-    C = np.zeros((N_x,N_t))
+    C = np.zeros((N_x,N_t), dtype="float16")
     R = D * dt / (dx ** 2)
 
     for i in range(0,N_x):
@@ -62,9 +64,9 @@ def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
         t = i * dt
         for j in range(0,N_x):
             if j == 0:
-                """w = 10*math.pi/t_fin
+                """w = 2*math.pi/(t_fin*5)
                 C[j,i+1] = 1 + 1*math.sin(w*t)""" # potentiel fonction
-                C[j,i+1] = 0 # potentiel fonction
+                C[j,i+1] = 1 # potentiel fonction
             elif j == N_x -1:
                 C[j,i+1] = 0 # potentiel fonction
             else:
@@ -96,17 +98,45 @@ def initialize_output_file():
     if os.path.isdir("output") == False:
         os.mkdir("output")
 
-def plot_concentration(C, N_t):
+def plott(dt,C,i):
+    plt.plot(C)
+    plt.title("Concentration en fonction de la position à t = {} s".format(round(i*dt,2)))
+    plt.xlabel("Position")
+    plt.ylabel("Concentration")
+    plt.ylim(-0.1,2.1)
+    plt.savefig("output/C_000{}.png".format(i))
+    plt.clf()
+
+def plot_concentration(C, N_t,dt):
     """Plot la concentration en fonction du temps"""
-    for i in range(0,N_t+1):
-        plt.plot(C[:,i])
-        plt.savefig("output/C_000{}.png".format(i))
-        plt.clf()
+    C = np.transpose(C)
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        executor.map(partial(plott,dt),C,range(0,N_t))
+        
 
 def plot_numerical_exact_comparison(C_verif, C):
     """Plot la comparaison entre la solution exacte et la solution numérique"""
     plt.plot(C_verif[:,N_t-1], color="blue", linestyle="solid")
     plt.plot(C[:,N_t-1], color="red", linestyle="dashed")
+
+    plt.plot(C_verif[:,50000], color="blue", linestyle="solid")
+    plt.plot(C[:,50000], color="red", linestyle="dashed")
+
+    plt.plot(C_verif[:,10000], color="blue", linestyle="solid")
+    plt.plot(C[:,10000], color="red", linestyle="dashed")
+
+    plt.plot(C_verif[:,5000], color="blue", linestyle="solid")
+    plt.plot(C[:,5000], color="red", linestyle="dashed")
+
+    plt.plot(C_verif[:,1000], color="blue", linestyle="solid")
+    plt.plot(C[:,1000], color="red", linestyle="dashed")
+
+    plt.plot(C_verif[:,100], color="blue", linestyle="solid")
+    plt.plot(C[:,100], color="red", linestyle="dashed")
+    plt.title("Comparaison entre la solution exacte et la solution numérique")
+    plt.xlabel("Position")
+    plt.ylabel("Concentration")
+    plt.legend(["Solution exacte", "Solution numérique"])
     plt.savefig("output/numerical_exact_comparison.png")
     plt.clf()
 
@@ -127,18 +157,18 @@ C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 print(R)
 C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
-#C_verif = initialize_data_exact_solving(N_x)
-#C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
-#diff = difference_exact_numerique(C_verif,C,N_t,N_x)
+C_verif = initialize_data_exact_solving(N_x)
+C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
+diff = difference_exact_numerique(C_verif,C,N_t,N_x)
 initialize_output_file()
 x_coord = np.linspace(0,1000,N_x)
-plt.plot(x_coord,C[:,N_t-1])
-plt.title("Concentration à t = 1000 s")
+plt.plot(x_coord,diff[:,N_t-1])
+plt.title("Différence entre la solution exacte et la solution numérique à t = 1000 s")
 plt.xlabel("Position")
-plt.ylabel("Concentration")
+plt.ylabel("Différence")
 plt.show()
 #plot_concentration(diff, N_t)
-#plot_numerical_exact_comparison(C_verif, C)
+plot_numerical_exact_comparison(C_verif, C)
 #end_plot(C,N_t,N_x)
 
 
