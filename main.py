@@ -39,6 +39,7 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     x = 0
     t = 0
     C = np.zeros((N_x,N_t), dtype="float16")
+
     R = D * dt / (dx ** 2)
 
     for i in range(0,N_x):
@@ -157,10 +158,10 @@ C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 print(R)
 C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
-#C_verif = initialize_data_exact_solving(N_x)
-#C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
+C_verif = initialize_data_exact_solving(N_x)
+C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
 #diff = difference_exact_numerique(C_verif,C,N_t,N_x)
-#initialize_output_file()
+initialize_output_file()
 #x_coord = np.linspace(0,1000,N_x)
 #plt.plot(x_coord,diff[:,N_t-1])
 #plt.title("Différence entre la solution exacte et la solution numérique à t = 1000 s")
@@ -168,7 +169,7 @@ C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
 #plt.ylabel("Différence")
 #plt.show()
 #plot_concentration(C, N_t,dt)
-#plot_numerical_exact_comparison(C_verif, C)
+plot_numerical_exact_comparison(C_verif, C)
 end_plot(C,N_t,N_x)
 
 
