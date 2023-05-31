@@ -167,7 +167,7 @@ C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
 #plt.xlabel("Position")
 #plt.ylabel("Différence")
 #plt.show()
-#plot_concentration(diff, N_t)
+#plot_concentration(C, N_t,dt)
 #plot_numerical_exact_comparison(C_verif, C)
 end_plot(C,N_t,N_x)
 
