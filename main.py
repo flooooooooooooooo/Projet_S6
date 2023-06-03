@@ -3,10 +3,19 @@ import math
 import matplotlib.pyplot as plt
 import os
 import subprocess
-import concurrent.futures
-from functools import partial
+try:
+    import concurrent.futures
+    from functools import partial
+    multiprocessing = True
+except:
+    multiprocessing = False
 import sys
-from tkinter.filedialog import askopenfilename
+try:
+    from tkinter.filedialog import askopenfilename
+    tkinter = True
+except:
+    tkinter = False
+import boundary_condition as bc
 
 def open_input_file(input_file):
     """Ouvre le fichier input et met les informations dans chaque variables"""
@@ -69,17 +78,17 @@ def initialize_data_exact_solving(N_x):
     C_verif = np.zeros((N_x,N_t))
     return C_verif
 
-def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt):
+def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt,boundary_0,boundary_L):
     """Résout le schéma numérique"""
     for i in range(0,N_t-1):
         t = i * dt
         for j in range(0,N_x):
             if j == 0:
-                """w = 2*math.pi/(t_fin*5)
-                C[j,i+1] = 1 + 1*math.sin(w*t)""" # potentiel fonction
-                C[j,i+1] = 1 # potentiel fonction
+                result = bc.Calcul(boundary_0, i*dt)
+                C[j,i+1] = result.return_result()
             elif j == N_x -1:
-                C[j,i+1] = 0 # potentiel fonction
+                result = bc.Calcul(boundary_L, i*dt)
+                C[j,i+1] = result.return_result()
             else:
                 C[j,i+1] = R *C[j-1,i] + (1 - 2 * R) * C[j,i] + R * C[j+1,i]
     return C
@@ -184,7 +193,10 @@ def end_plot(C,N_t,N_x,t_fin):
 """Main"""
 
 """Initialisation des données"""
-input_file = askopenfilename(title="Ouvrir le fichier d'entrée", filetypes=[('txt files','*.txt')])
+if tkinter:
+    input_file = askopenfilename(title="Ouvrir le fichier d'entrée", filetypes=[('txt files','*.txt')])
+else:
+    input_file = "input.txt"
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t, boundary_0, boundary_L = open_input_file(input_file)
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 C_verif = initialize_data_exact_solving(N_x)
@@ -196,13 +208,17 @@ if R >= 1/2:
         sys.exit()
 
 """Calcul de la concentration"""
-C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
+C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt,boundary_0,boundary_L)
 C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
 diff = difference_exact_numerique(C_verif,C,N_t,N_x)
 
 """Création des graphiques et de la vidéo"""
 initialize_output_file()
-plot_concentration(C, N_t,dt)
+if multiprocessing:
+    plot_concentration(C, N_t,dt)
+else:
+    for i in range(0,N_t):
+        create_save_plot(dt,C,i)
 plot_numerical_exact_comparison(C_verif, C)
 video_concentration()
 end_plot(C,N_t,N_x)

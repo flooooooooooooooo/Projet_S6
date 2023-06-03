@@ -6,3 +6,5 @@ D=1
 N_x=100
 t_fin=1000000
 N_t=2000001
+boundary_0=0
+boundary_L=0
