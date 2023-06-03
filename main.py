@@ -6,10 +6,11 @@ import subprocess
 import concurrent.futures
 from functools import partial
 import sys
+from tkinter.filedialog import askopenfilename
 
-def open_input_file():
+def open_input_file(input_file):
     """Ouvre le fichier input et met les informations dans chaque variables"""
-    with open(r"input.txt", "r") as f:
+    with open(input_file, "r") as f:
         text = f.readlines()
 
     for line in text:
@@ -30,8 +31,16 @@ def open_input_file():
             t_fin = float(line[1])
         elif line[0] == "N_t":
             N_t = int(line[1])
+        elif line[0] == "boundary_0":
+            boundary_0 = line[1]
+        elif line[0] == "boundary_L":
+            boundary_L = line[1]
     
-    return C_0, L, x_d, x_f, D, N_x, t_fin, N_t
+    try:
+        return C_0, L, x_d, x_f, D, N_x, t_fin, N_t, boundary_0, boundary_L
+    except:
+        print("Erreur dans le fichier input")
+        sys.exit()
 
 def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     """Initialise les données pour la résolution du schéma numérique"""
@@ -175,10 +184,12 @@ def end_plot(C,N_t,N_x,t_fin):
 """Main"""
 
 """Initialisation des données"""
-C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
+input_file = askopenfilename(title="Ouvrir le fichier d'entrée", filetypes=[('txt files','*.txt')])
+C_0, L, x_d, x_f, D, N_x, t_fin, N_t, boundary_0, boundary_L = open_input_file(input_file)
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
 C_verif = initialize_data_exact_solving(N_x)
 if R >= 1/2:
+    print("R = ", R)
     print("Le schéma n'est pas stable")
     answer = input("Voulez-vous continuer ? (O/N)")
     if answer == "N":
