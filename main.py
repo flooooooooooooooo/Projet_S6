@@ -40,6 +40,7 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     x = 0
     t = 0
     C = np.zeros((N_x,N_t), dtype="float16")
+
     R = D * dt / (dx ** 2)
 
     for i in range(0,N_x):
