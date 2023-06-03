@@ -5,6 +5,7 @@ import os
 import subprocess
 import concurrent.futures
 from functools import partial
+import sys
 
 def open_input_file():
     """Ouvre le fichier input et met les informations dans chaque variables"""
@@ -98,7 +99,8 @@ def initialize_output_file():
     if os.path.isdir("output") == False:
         os.mkdir("output")
 
-def plott(dt,C,i):
+def create_save_plot(dt,C,i):
+    """Créer et sauvegarde un graphique de la concentration en fonction de la position à un temps donné"""
     plt.plot(C)
     plt.title("Concentration en fonction de la position à t = {} s".format(round(i*dt,2)))
     plt.xlabel("Position")
@@ -108,14 +110,20 @@ def plott(dt,C,i):
     plt.clf()
 
 def plot_concentration(C, N_t,dt):
-    """Plot la concentration en fonction du temps"""
+    """Fait un graphique de la concentration pour chaque pas de temps calculé"""
+    if os.path.isdir("output") == False:
+        initialize_output_file()
+    if os.path.isfile("output/C_0000.png") == True:
+        answer = input("des images existe déjà dans le fichier output, voulez-vous continuez ? (O/N)")
+        if answer == "N":
+            return
     C = np.transpose(C)
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        executor.map(partial(plott,dt),C,range(0,N_t))
+        executor.map(partial(create_save_plot,dt),C,range(0,N_t))
         
 
 def plot_numerical_exact_comparison(C_verif, C):
-    """Plot la comparaison entre la solution exacte et la solution numérique"""
+    """Fait un graphique de la comparaison entre la solution exacte et la solution numérique"""
     plt.plot(C_verif[:,N_t-1], color="blue", linestyle="solid")
     plt.plot(C[:,N_t-1], color="red", linestyle="dashed")
 
@@ -141,34 +149,50 @@ def plot_numerical_exact_comparison(C_verif, C):
     plt.clf()
 
 def video_concentration():
-    subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4", shell=True)
+    """fait une vidéo de la concentration en fonction de la position à chaque pas de temps avec les images déja créées"""
+    if os.path.isfile("output/video_concentration.mp4") == True:
+        answer = input("une vidéo existe déjà voulez-vous la supprimer ?(O/N)")
+        if answer == "O":
+            input("Appuyer sur entrer pour supprimer la vidéo")
+        elif answer == "N":
+            input("renomer la vidéo avant de continuer, une fois renommer appuyer sur entrer pour continuer")
+        os.remove("output/video_concentration.mp4")
+    if os.path.isfile("output/C_0000.png") == True:
+        subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4")
+    else:
+        print("Pas de fichier image à convertir en vidéo")
 
-def end_plot(C,N_t,N_x):
-    """Plot la concentration en fonction de la position à t = 1000 s"""
+def end_plot(C,N_t,N_x,t_fin):
+    """Plot la concentration en fonction de la position à la fin du calcul"""
     x_coord = np.linspace(0,1000,N_x)
     plt.plot(x_coord,C[:,N_t-1])
-    plt.title("Concentration en fonction de la position à t = 1000000 s")
+    plt.title("Concentration en fonction de la position à t = {t_fin} s")
     plt.xlabel("Position")
     plt.ylabel("Concentration")
     plt.show()
 
 """Main"""
+
+"""Initialisation des données"""
 C_0, L, x_d, x_f, D, N_x, t_fin, N_t = open_input_file()
 dt, dx, x, t, C, R = initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
-print(R)
-C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
 C_verif = initialize_data_exact_solving(N_x)
+if R >= 1/2:
+    print("Le schéma n'est pas stable")
+    answer = input("Voulez-vous continuer ? (O/N)")
+    if answer == "N":
+        sys.exit()
+
+"""Calcul de la concentration"""
+C = solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt)
 C_verif = solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
 diff = difference_exact_numerique(C_verif,C,N_t,N_x)
+
+"""Création des graphiques et de la vidéo"""
 initialize_output_file()
-x_coord = np.linspace(0,1000,N_x)
-plt.plot(x_coord,diff[:,N_t-1])
-plt.title("Différence entre la solution exacte et la solution numérique à t = 1000 s")
-plt.xlabel("Position")
-plt.ylabel("Différence")
-plt.show()
-#plot_concentration(diff, N_t)
+plot_concentration(C, N_t,dt)
 plot_numerical_exact_comparison(C_verif, C)
-#end_plot(C,N_t,N_x)
+video_concentration()
+end_plot(C,N_t,N_x)
 
 
