@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
 
     """Calcul de la concentration"""
-    C = solve.solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt,boundary_0,boundary_L)
+    C = solve.solve_concentration_numericaly(N_t, N_x, R, C,dt,boundary_0,boundary_L)
     C_verif = solve.solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
     diff = solve.difference_exact_numerique(C_verif,C,N_t,N_x)
 

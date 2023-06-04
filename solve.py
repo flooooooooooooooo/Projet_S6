@@ -5,7 +5,7 @@ import math
 """import de modules personnels"""
 import boundary_condition as bc
 
-def solve_concentration_numericaly(N_t, N_x, R, C,t_fin,dt,boundary_0,boundary_L):
+def solve_concentration_numericaly(N_t, N_x, R, C,dt,boundary_0,boundary_L):
     """Résout le schéma numérique"""
     for i in range(0,N_t-1):
         t = i * dt
