@@ -47,12 +47,13 @@ if __name__ == "__main__":
     """Création des graphiques et de la vidéo"""
     out.initialize_output_file()
     if multiprocessing:
-        out.plot_concentration(C, N_t,dt)
+        pass
+        #out.plot_concentration(C, N_t,dt)
     else:
         for i in range(0,N_t):
             out.create_save_plot(dt,C,i)
     out.plot_numerical_exact_comparison(C_verif, C,N_t)
-    out.video_concentration()
-    out.end_plot(C,N_t,N_x)
+    #out.video_concentration()
+    out.end_plot(C,N_t,N_x,t_fin)
 
 

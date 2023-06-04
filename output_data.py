@@ -44,20 +44,20 @@ def plot_numerical_exact_comparison(C_verif, C, N_t):
     plt.plot(C_verif[:,N_t-1], color="blue", linestyle="solid")
     plt.plot(C[:,N_t-1], color="red", linestyle="dashed")
 
-    plt.plot(C_verif[:,50000], color="blue", linestyle="solid")
-    plt.plot(C[:,50000], color="red", linestyle="dashed")
+    plt.plot(C_verif[:,int((N_t-1)*50/100)], color="blue", linestyle="solid")
+    plt.plot(C[:,int((N_t-1)*50/100)], color="red", linestyle="dashed")
 
-    plt.plot(C_verif[:,10000], color="blue", linestyle="solid")
-    plt.plot(C[:,10000], color="red", linestyle="dashed")
+    plt.plot(C_verif[:,int((N_t-1)*10/100)], color="blue", linestyle="solid")
+    plt.plot(C[:,int((N_t-1)*10/100)], color="red", linestyle="dashed")
 
-    plt.plot(C_verif[:,5000], color="blue", linestyle="solid")
-    plt.plot(C[:,5000], color="red", linestyle="dashed")
+    plt.plot(C_verif[:,int((N_t-1)*5/100)], color="blue", linestyle="solid")
+    plt.plot(C[:,int((N_t-1)*5/100)], color="red", linestyle="dashed")
 
-    plt.plot(C_verif[:,1000], color="blue", linestyle="solid")
-    plt.plot(C[:,1000], color="red", linestyle="dashed")
+    plt.plot(C_verif[:,int((N_t-1)*1/100)], color="blue", linestyle="solid")
+    plt.plot(C[:,int((N_t-1)*1/100)], color="red", linestyle="dashed")
 
-    plt.plot(C_verif[:,100], color="blue", linestyle="solid")
-    plt.plot(C[:,100], color="red", linestyle="dashed")
+    plt.plot(C_verif[:,int((N_t-1)*0.1/100)], color="blue", linestyle="solid")
+    plt.plot(C[:,int((N_t-1)*0.1/100)], color="red", linestyle="dashed")
     plt.title("Comparaison entre la solution exacte et la solution numérique")
     plt.xlabel("Position")
     plt.ylabel("Concentration")

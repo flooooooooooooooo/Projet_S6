@@ -39,8 +39,8 @@ def open_input_file(input_file):
 
 def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     """Initialise les données pour la résolution du schéma numérique"""
-    dt = t_fin / N_t
-    dx = L / N_x
+    dt = t_fin / (N_t - 1)
+    dx = L / (N_x-1)
     x = 0
     t = 0
     C = np.zeros((N_x,N_t), dtype="float16")
