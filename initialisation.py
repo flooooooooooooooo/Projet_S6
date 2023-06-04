@@ -9,6 +9,7 @@ def open_input_file(input_file):
 
     for line in text:
         line = line.split("=")
+        line[1] = line[1].replace("\n","")
         if line[0] == "C_0":
             C_0 = float(line[1])
         elif line[0] == "L":

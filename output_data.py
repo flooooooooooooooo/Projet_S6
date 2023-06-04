@@ -16,13 +16,13 @@ def initialize_output_file():
     if os.path.isdir("output") == False:
         os.mkdir("output")
 
-def create_save_plot(dt,C,i):
+def create_save_plot(dt,max,C,i):
     """Créer et sauvegarde un graphique de la concentration en fonction de la position à un temps donné"""
     plt.plot(C)
     plt.title("Concentration en fonction de la position à t = {} s".format(round(i*dt,2)))
     plt.xlabel("Position")
     plt.ylabel("Concentration")
-    plt.ylim(-0.1,2.1)
+    plt.ylim(-0.1, max + 0.1)
     plt.savefig("output/C_000{}.png".format(i))
     plt.clf()
 
@@ -36,7 +36,7 @@ def plot_concentration(C, N_t,dt):
             return
     C = np.transpose(C)
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        executor.map(partial(create_save_plot,dt),C,range(0,N_t))
+        executor.map(partial(create_save_plot,dt,C.max()),C,range(0,N_t))
         
 
 def plot_numerical_exact_comparison(C_verif, C, N_t):

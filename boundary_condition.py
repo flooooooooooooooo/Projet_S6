@@ -55,7 +55,6 @@ class Calcul:
             chiffre_float = float(chiffre_str)
         if chiffre_float != None:
             self.calcul_list_total.append(chiffre_float)
-        print(self.calcul_list_total)
         self.calcul(self.calcul_list_total)
 
 
@@ -180,7 +179,4 @@ class Calcul:
         
         
     def return_result(self):
-        print("result")
-        print(self.calcul_list[0])
-        print(self.t)
         return self.calcul_list[0]
