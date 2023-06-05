@@ -54,5 +54,3 @@ if __name__ == "__main__":
     out.plot_numerical_exact_comparison(C_verif, C,N_t)
     out.video_concentration()
     out.end_plot(C,N_t,N_x,t_fin)
-
-

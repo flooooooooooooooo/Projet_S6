@@ -43,7 +43,7 @@ def plot_numerical_exact_comparison(C_verif, C, N_t):
     """Fait un graphique de la comparaison entre la solution exacte et la solution numérique"""
     plt.plot(C_verif[:,N_t-1], color="blue", linestyle="solid")
     plt.plot(C[:,N_t-1], color="red", linestyle="dashed")
-
+    
     plt.plot(C_verif[:,int((N_t-1)*50/100)], color="blue", linestyle="solid")
     plt.plot(C[:,int((N_t-1)*50/100)], color="red", linestyle="dashed")
 
@@ -83,7 +83,7 @@ def end_plot(C,N_t,N_x,t_fin):
     """Plot la concentration en fonction de la position à la fin du calcul"""
     x_coord = np.linspace(0,1000,N_x)
     plt.plot(x_coord,C[:,N_t-1])
-    plt.title("Concentration en fonction de la position à t = {t_fin} s")
+    plt.title("Concentration en fonction de la position à t = {} s".format(t_fin))
     plt.xlabel("Position")
     plt.ylabel("Concentration")
     plt.show()
