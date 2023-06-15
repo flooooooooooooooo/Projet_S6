@@ -2,8 +2,10 @@
 import math
 
 class Calcul:
+    """Calcul les conditions aux limites"""
 
     def __init__(self, f, t):
+        """Initialise les données pour le calcul des conditions aux limites"""
         self.chiffre_list = []
         self.calcul_list_total = []
         self.f = f
@@ -15,6 +17,7 @@ class Calcul:
 
 
     def define_calcul(self):
+        """ecrit le calcul sous forme d'une liste"""
         chiffre_float = None
         chiffre_str = None
         for car in self.f:
@@ -59,6 +62,7 @@ class Calcul:
 
 
     def multiplication(self):
+        """calcul les multiplications"""
         for i in range(len(self.calcul_list)):
             if self.calcul_list[i] == "*":
                 if self.calcul_list[i+1] == "t":
@@ -72,6 +76,7 @@ class Calcul:
     
 
     def division(self):
+        """calcul les divisions"""
         for i in range(len(self.calcul_list)):
             if self.calcul_list[i] == "/":
                 if self.calcul_list[i+1] == "t":
@@ -85,6 +90,7 @@ class Calcul:
     
 
     def soustraction_addition(self):
+        """calcul les soustractions et les additions"""
         for i in range(len(self.calcul_list)):
             if self.calcul_list[i] == "+":
                 if self.calcul_list[i+1] == "t":
@@ -109,6 +115,7 @@ class Calcul:
 
 
     def cos_sin_exp(self):
+        """calcul les cosinus, sinus et exponentielles"""
         if self.verif_func == ["c", "o", "s"]:
             self.cos = True
             self.sin = False
@@ -128,6 +135,7 @@ class Calcul:
 
 
     def brackets(self):
+        """calcul les fonctions dans les parenthèses"""
         for i in range(len(self.calcul_list)):
             if self.calcul_list[i] == "(":
                 self.verif_func = self.calcul_list[i-3:i]
@@ -148,6 +156,7 @@ class Calcul:
 
 
     def calcul(self, calcul_considered):
+        """calcul le calcul"""
         self.calcul_list = calcul_considered
         while len(self.calcul_list) > 1:
             self.brackets()
@@ -179,4 +188,5 @@ class Calcul:
         
         
     def return_result(self):
+        """retourne le résultat"""
         return self.calcul_list[0]

@@ -8,8 +8,8 @@ try:
     multiprocessing = True
 except:
     multiprocessing = False
-try:
-    from tkinter.filedialog import askopenfilename, askopendirectory
+try:    
+    from tkinter.filedialog import askopenfilename
     tkinter = True
 except:
     tkinter = False
@@ -28,10 +28,16 @@ if __name__ == "__main__":
     else:
         input_file = "input.txt"
     C_0, L, x_d, x_f, D, N_x, t_fin, N_t, boundary_0, boundary_L = init.open_input_file(input_file)
+    print("La longueur du domaine est de {} m".format(L))
+    print("Zone de concentration initiale entre {} et {} m".format(x_d,x_f))
+    print("Concentration initiale dans cette zone : {}".format(C_0))
+    print("La diffusivité dans le domaine est de : {}".format(D))
+    print("Le temps final est de : {} s".format(t_fin))
     dt, dx, x, t, C, R = init.initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D)
     C_verif = init.initialize_data_exact_solving(N_x, N_t)
+    print("R = ", R)
+
     if R >= 1/2:
-        print("R = ", R)
         print("Le schéma n'est pas stable")
         answer = input("Voulez-vous continuer ? (O/N)")
         if answer == "N":
@@ -47,10 +53,11 @@ if __name__ == "__main__":
     """Création des graphiques et de la vidéo"""
     out.initialize_output_file()
     if multiprocessing:
-        out.plot_concentration(C, N_t,dt)
+        pass
+        #out.plot_concentration(C, N_t,dt)
     else:
         for i in range(0,N_t):
             out.create_save_plot(dt,C,i)
     out.plot_numerical_exact_comparison(C_verif, C,N_t)
-    out.video_concentration()
+    #out.video_concentration()
     out.end_plot(C,N_t,N_x,t_fin)
