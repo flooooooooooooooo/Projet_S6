@@ -43,7 +43,7 @@ def initialize_data_numerical_solving(t_fin, N_t, L, N_x, C_0, x_d, x_f, D):
     dx = L / (N_x-1)
     x = 0
     t = 0
-    C = np.zeros((N_x,N_t), dtype="float128")
+    C = np.zeros((N_x,N_t))
 
     R = D * dt / (dx ** 2)
 
