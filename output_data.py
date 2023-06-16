@@ -18,6 +18,7 @@ def initialize_output_file():
 
 def create_save_plot(dt,max,C,i):
     """Créer et sauvegarde un graphique de la concentration en fonction de la position à un temps donné"""
+    
     plt.plot(C)
     plt.title("Concentration en fonction de la position à t = {} s".format(round(i*dt,2)))
     plt.xlabel("Position")
@@ -31,13 +32,18 @@ def plot_concentration(C, N_t,dt):
     if os.path.isdir("output") == False:
         initialize_output_file()
     if os.path.isfile("output/C_0000.png") == True:
-        answer = input("des images existe déjà dans le fichier output, voulez-vous continuez ? (O/N)")
+        answer = input("des images existe déjà dans le fichier output(elles seront supprimées), voulez-vous continuez ? (O/N)")
         if answer == "N":
-            return
+            input("renomer les images ou déplacer les avant de continuer, une fois fait appuyer sur entrer pour continuer")
+        else:
+            subprocess.call("rm output/C_00*", shell=True)
+            initialize_output_file()
+    if N_t > 1000:
+        print("Le temps de production des graphiques peut être long")
     C = np.transpose(C)
     with concurrent.futures.ProcessPoolExecutor() as executor:
         executor.map(partial(create_save_plot,dt,C.max()),C,range(0,N_t))
-        
+    print("Les graphiques ont été créés et sauvegardés dans le dossier output")
 
 def plot_numerical_exact_comparison(C_verif, C, N_t):
     """Fait un graphique de la comparaison entre la solution exacte et la solution numérique"""
@@ -78,7 +84,7 @@ def video_concentration():
             input("renomer la vidéo avant de continuer, une fois renommer appuyer sur entrer pour continuer")
         os.remove("output/video_concentration.mp4")
     if os.path.isfile("output/C_0000.png") == True:
-        subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4")
+        subprocess.call("ffmpeg -s 800x600 -i output/C_000%d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p output/video_concentration.mp4",shell=True)
     else:
         print("Pas de fichier image à convertir en vidéo")
 

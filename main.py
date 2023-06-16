@@ -1,5 +1,6 @@
 """import de modules"""
 import sys
+import subprocess
 
 """import de modules facultatifs et possiblement non présent d'origine sur python"""
 try:
@@ -23,8 +24,26 @@ import solve
 
 if __name__ == "__main__":
     """Initialisation des données"""
+    if not tkinter or not multiprocessing:
+        print("Plusieurs modules facultatifs ne sont pas présents sur votre ordinateur")
+        answer = input("Voulez-vous les installer ? (O/N)")
+        if answer == "O":
+            subprocess.call("python3 -m pip install concurrent", shell=True)
+            subprocess.call("python3 -m pip install functools", shell=True)
+            print("pour installer tkinter, veuillez installer le paquet python3-tk: sudo apt-get install python3-tk")
+            print("veuillez relancer le programme")
+            sys.exit()
+
+
     if tkinter:
         input_file = askopenfilename(title="Ouvrir le fichier d'entrée", filetypes=[('txt files','*.txt')])
+        if input_file == ():
+            print("Aucun fichier n'a été sélectionné")
+            sys.exit()
+        elif input_file == "":
+            print("Aucun fichier n'a été sélectionné")
+            sys.exit()
+        
     else:
         input_file = "input.txt"
     C_0, L, x_d, x_f, D, N_x, t_fin, N_t, boundary_0, boundary_L = init.open_input_file(input_file)
@@ -42,22 +61,24 @@ if __name__ == "__main__":
         answer = input("Voulez-vous continuer ? (O/N)")
         if answer == "N":
             sys.exit()
+    else:
+        print("Le schéma est stable")
 
 
     """Calcul de la concentration"""
     C = solve.solve_concentration_numericaly(N_t, N_x, R, C,dt,boundary_0,boundary_L)
-    C_verif = solve.solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
-    diff = solve.difference_exact_numerique(C_verif,C,N_t,N_x)
+    #C_verif = solve.solve_concentration_exactly(dx, dt, C_verif, N_t, N_x, D)
+    #diff = solve.difference_exact_numerique(C_verif,C,N_t,N_x)
 
 
     """Création des graphiques et de la vidéo"""
     out.initialize_output_file()
     if multiprocessing:
         pass
-        #out.plot_concentration(C, N_t,dt)
+        out.plot_concentration(C, N_t,dt)
     else:
         for i in range(0,N_t):
             out.create_save_plot(dt,C,i)
-    out.plot_numerical_exact_comparison(C_verif, C,N_t)
-    #out.video_concentration()
+    #out.plot_numerical_exact_comparison(C_verif, C,N_t)
+    out.video_concentration()
     out.end_plot(C,N_t,N_x,t_fin)

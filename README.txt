@@ -1,6 +1,6 @@
 Nom du programme : main.py
 
-Date de dernière modification : 
+Date de dernière modification : 16/06/2023
 
 Auteur : Alison Da Silva, Florio Avenel
 
@@ -8,7 +8,7 @@ Objectif :  Programme de resolution d'une equation de diffusion
             par une methode de différence finie
             (schéma Euler explicite en temps et centré en espace)
 
-Fichier d'entrée:   fichier texte qui sera selectionner dans le programme si tkinter
+Fichier d'entrée:   fichier texte qui sera selectionner dans le programme si le module tkinter
                     est installé, sinon il faut le mettre dans le répertoire du programme
                     avec le nom "input.txt"
                     le fichier doit être de la forme:
@@ -26,7 +26,7 @@ Fichier d'entrée:   fichier texte qui sera selectionner dans le programme si tk
                     les fonctions dans les deux conditions aux limites peuvent contenir: 
                     pi, cos, sin, exp, t, *, +, -, /
 
-Fichiers résultats : images et video dans le dossier output dans le répertoire du programme
+Fichiers résultats : images et vidéos dans le dossier output dans le répertoire du programme
 
 
 Pour exécuter le programme : python3 main.py ou python main.py

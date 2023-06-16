@@ -20,6 +20,13 @@ class Calcul:
         """ecrit le calcul sous forme d'une liste"""
         chiffre_float = None
         chiffre_str = None
+        chiffre_pi = ""
+        try:
+            float(self.f)
+            self.calcul_list = [float(self.f)]
+            return
+        except:
+            pass
         for car in self.f:
             if car == " ":
                 continue
@@ -30,8 +37,8 @@ class Calcul:
                 chiffre_pi = "p"
                 continue
             elif car == "i" and chiffre_pi == "p":
-                chiffre_pi = ""
-                car = str(math.pi)
+                    chiffre_pi = ""
+                    car = str(math.pi)
 
             try:
                 c = float(car)
