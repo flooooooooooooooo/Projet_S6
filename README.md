@@ -11,7 +11,7 @@ par une methode de différence finie
 (schéma Euler explicite en temps et centré en espace)
 
 Équation différentielle résolue:        
-$\frac{\partial C(x,t)}{\partial t}$
+$$\frac{\partial C(x,t)}{\partial t} = D *  \frac{\partial^2 C(x,t)}{\partial x^2}$$
 
 # Fichier d'entrée:   
 Le fichier d'entrée est un fichier texte qui sera selectionner dans le programme si le module tkinter
