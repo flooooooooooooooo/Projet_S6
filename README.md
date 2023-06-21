@@ -37,7 +37,5 @@ images et vidéos dans le dossier output dans le répertoire du programme
 Afin d'exécuter le programme il faut utiliser la commande `python3 main.py` ou `python main.py`
 
 # Module python aditionnel 
-## module nécessaire :
-numpy, matplotlib, os, sys, math, subprocess
-## module optionnel : 
-concurrent futures, functools, tkinter
++ module nécessaire : numpy, matplotlib, os, sys, math, subprocess
++ module optionnel : concurrent futures, functools, tkinter
