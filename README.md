@@ -1,7 +1,3 @@
-Nom du programme : main.py
-
-Date de dernière modification : 16/06/2023
-
 # Auteur : 
 Alison Da Silva, Florio Avenel
 
