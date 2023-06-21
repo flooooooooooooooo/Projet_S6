@@ -82,7 +82,8 @@ les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, si
 # Fichiers résultats :
 Création de graphique:      
 ![Exemple de graphique](assets/Concentration_boundary_0.png)    
-images et vidéos stocké dans le dossier output dans le répertoire du programme
+
+Images et vidéos stocké dans le dossier output dans le répertoire du programme
 
 
 # Pour exécuter le programme : 
