@@ -31,7 +31,10 @@ boundary_L=
 les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, sin, exp, t, *, +, -, /
 
 # Fichiers résultats :
-images et vidéos dans le dossier output dans le répertoire du programme
+Création de graphique: ![Exemple de graphique](assets/Concentration_boundary_0.png)
+Création de vidéo: ![Exemple de vidéo](assets/video_fonction.mp4)
+images et vidéos stocké dans le dossier output dans le répertoire du programme
+
 
 # Pour exécuter le programme : 
 Afin d'exécuter le programme il faut utiliser la commande `python3 main.py` ou `python main.py`
