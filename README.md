@@ -31,8 +31,8 @@ boundary_L=
 les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, sin, exp, t, *, +, -, /
 
 # Fichiers résultats :
-Création de graphique: ![Exemple de graphique](assets/Concentration_boundary_0.png)
-Création de vidéo: ![Exemple de vidéo](assets/video_fonction.mp4)
+Création de graphique: 
+![Exemple de graphique](assets/Concentration_boundary_0.png)
 images et vidéos stocké dans le dossier output dans le répertoire du programme
 
 
