@@ -53,6 +53,7 @@ Différence entre la solution exacte et la solution numérique à différent tem
 ![Solution exacte et solution numérique à différent pas de temps](assets/exact_numerique.png)
 
 Le temps de la dispersion étudié ne doit pas être trop important pour éviter de trouver des solutions influencées par les conditions aux limites.
+
 De plus pour un nombre trop faible de pas d'espace la solution ne sera pas assez précise pour et une différence entre la solution exacte et la solution numérique se formera.
 
 Pour ce schéma numérique la valeur de R doit être inférieur à 0,5 dans le cas contraire la solution sera instable.
