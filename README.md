@@ -44,7 +44,7 @@ avec $R=D \Delta t / \Delta x^{2}$, un nombre sans dimension appelé par la suit
 Ici une solution exacte du problème existe dans le cas d'un milieu semi-infini $(0 \leq x<\infty)$, avec par exemple comme condition initiale à $t=0: C(x, 0)=0$ pour tout $0 \leq x<\infty$ et comme condition limite en $x=0: C(0, t)=C_{x 0}$ pour $t>0$. La solution est donnée par l'équation (9) :
 
 $$
-\frac{C(x, t)}{C_{x 0}} = 1 -  \left (\frac{x}{2 \sqrt{D t}}\right) \quad \text { avec } \quad \operatorname{erf} (x)=\frac{2}{\sqrt{\pi}} \int_{0}^{x} \exp \left(-t^{2}\right) d t
+\frac{C(x, t)}{C_{x 0}} = 1 -  \text{erf} \left (\frac{x}{2 \sqrt{D t}}\right) \quad \text { avec } \quad \text{erf} (x)=\frac{2}{\sqrt{\pi}} \int_{0}^{x} \exp \left(-t^{2}\right) d t
 $$
 
 où $C_{x 0}$ est la concentration imposée en $x=0$ du polluant et $D$ est un coefficient de diffusion (en $\mathrm{m}^{2} / \mathrm{s}$ ).
