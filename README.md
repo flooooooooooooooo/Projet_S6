@@ -10,7 +10,7 @@ Programme de resolution d'une equation de diffusion
 par une methode de différence finie
 (schéma Euler explicite en temps et centré en espace)
 
-our déterminer le champ de concentration $C$ à un instant $t_{f}$ dans un milieu diffusif le long d'un domaine de longueur $L$ (par défaut $L=1 \mathrm{~km}$ ) suivant la direction $x$, on est amené à résoudre l'équation différentielle suivante (terme d'advection négligé) :
+Pour déterminer le champ de concentration $C$ à un instant $t_{f}$ dans un milieu diffusif le long d'un domaine de longueur $L$ (par défaut $L=1 \mathrm{~km}$ ) suivant la direction $x$, on est amené à résoudre l'équation différentielle suivante (terme d'advection négligé) :
 
 $$\frac{\partial C(x,t)}{\partial t} = D \frac{\partial^2 C(x,t)}{\partial x^2}$$
 
@@ -23,7 +23,7 @@ $$
 où $C_{0}$ est la concentration du polluant lors de l'injection dans le domaine, $x_{d}$ et $x_{f}$ sont les positions de début et de fin de la zone de pollution $(0 \leq x_{d} < x_{f} \leq L)$ et $H(x)$ est la fonction d'Heaviside telle que $H(x \geq 0)=1$ et $H(x<0)=0$.
 
 
-Les conditions limites en $x=0$ et $x=L$ sont des conditions de Dirichlet, à savoir $C(0, t)=f(t)$ et $C(L, t)=0$ avec $t \geq 0$ où $f$ est une fonction du temps qui sera précisée par la suite. Par défaut, $f(t)=0$. La solution numérique de ce problème est obtenue en utilisant la méthode des différences finies. Pour cela, le domaine physique de longueur $L$ et de direction $x$ est discrétisé en $N$ segments de longueur $\Delta x$, ce dernier étant appelé le pas d'espace. Ici, les $N+1$ points $x_{k}$ de calcul seront numérotés de $k=0$ à $k=N$ depuis $x_{0}=0$ jusqu'à $x_{N}=L$. Les solutions en temps sont calculées tous les $\Delta t$ depuis $t=0$ jusqu'à $t_{f}=N_{t} \Delta t$ avec $\Delta t$ appelé le pas de temps et $N_{t}$ est le nombre total de pas de temps.
+Les conditions limites en $x=0$ et $x=L$ sont des conditions de Dirichlet, à savoir $C(0, t)=f_1(t)$ et $C(L, t)=f_2(t)$ avec $t \geq 0$ où $f_1$ et $f_2$ sont des fonctions du temps qui seront précisées par la suite. La solution numérique de ce problème est obtenue en utilisant la méthode des différences finies. Pour cela, le domaine physique de longueur $L$ et de direction $x$ est discrétisé en $N$ segments de longueur $\Delta x$, ce dernier étant appelé le pas d'espace. Ici, les $N$ points $x_{k}$ de calcul seront numérotés de $k=0$ à $k=N-1$ depuis $x_{0}=0$ jusqu'à $x_{N-1}=L$. Les solutions en temps sont calculées tous les $\Delta t$ depuis $t=0$ jusqu'à $t_{f}=N_{t} \Delta t$ avec $\Delta t$ appelé le pas de temps et $N_{t}$ est le nombre total de pas de temps.
 
 On souhaite tester le schéma numérique dit « explicite centré » pour résoudre cette équation.
 
@@ -33,8 +33,8 @@ En utilisant un schéma Euler explicite en temps et centré en espace, on obtien
 $$
 \begin{array}{ll}
 \left.C\left(x_{k}, t+\Delta t\right)=R C\left(x_{k}-\Delta x, t\right)+(1-2 R) C\left(x_{k}, t\right)+R C\left(x_{k}+\Delta x, t\right) \quad \text { pour } k \in\right] 0, N[, \\
-C\left(x_{0}, t+\Delta t\right)=f(t+\Delta t) & \text { pour } k=0, \\
-C\left(x_{N}, t+\Delta t\right)=0 & \text { pour } k=N,
+C\left(x_{0}, t+\Delta t\right)=f_1(t+\Delta t) & \text { pour } k=0, \\
+C\left(x_{N}, t+\Delta t\right)=f_2(t+\Delta t) & \text { pour } k=N,
 \end{array}
 $$
 
