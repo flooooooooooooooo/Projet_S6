@@ -76,7 +76,7 @@ N_t=
 boundary_0=
 boundary_L=
 ```
-
+ 
 les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, sin, exp, t, *, +, -, /
 
 # Fichiers résultats :
