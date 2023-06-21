@@ -38,6 +38,26 @@ C\left(x_{N}, t+\Delta t\right)=f_2(t+\Delta t) & \text { pour } k=N,
 $$
 
 avec $R=D \Delta t / \Delta x^{2}$, un nombre sans dimension appelé par la suite «nombre de Fourier ».
+
+# Validation du programme
+
+Ici une solution exacte du problème existe dans le cas d'un milieu semi-infini $(0 \leq x<\infty)$, avec par exemple comme condition initiale à $t=0: C(x, 0)=0$ pour tout $0 \leq x<\infty$ et comme condition limite en $x=0: C(0, t)=C_{x 0}$ pour $t>0$. La solution est donnée par l'équation (9) :
+
+$$
+\frac{C(x, t)}{C_{x 0}}=1-\operatorname{erf}\left(\frac{x}{2 \sqrt{D t}}\right) \quad \text { avec } \quad \operatorname{erf}(x)=\frac{2}{\sqrt{\pi}} \int_{0}^{x} \exp \left(-t^{2}\right) d t
+$$
+
+où $C_{x 0}$ est la concentration imposée en $x=0$ du polluant et $D$ est un coefficient de diffusion (en $\mathrm{m}^{2} / \mathrm{s}$ ).
+
+Différence entre la solution exacte et la solution numérique à différent temps:
+![Solution exacte et solution numérique à différent pas de temps](assets/exact_numerique.png)
+
+Le temps de la dispersion étudié ne doit pas être trop important pour éviter de trouver des solutions influencées par les conditions aux limites.
+De plus pour un nombre trop faible de pas d'espace la solution ne sera pas assez précise pour et une différence entre la solution exacte et la solution numérique se formera.
+
+Pour ce schéma numérique la valeur de R doit être inférieur à 0,5 dans le cas contraire la solution sera instable.
+
+
 # Fichier d'entrée:   
 Le fichier d'entrée est un fichier texte qui sera selectionner dans le programme si le module tkinter
 est installé, sinon il faut le mettre dans le répertoire du programme
