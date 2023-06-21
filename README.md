@@ -15,7 +15,7 @@ fichier texte qui sera selectionner dans le programme si le module tkinter
 est installé, sinon il faut le mettre dans le répertoire du programme
 avec le nom "input.txt"
 le fichier doit être de la forme:
-'''
+```
 C_0=
 L=
 x_d=
@@ -26,7 +26,7 @@ t_fin=
 N_t=
 boundary_0=
 boundary_L=
-'''
+```
 
 les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, sin, exp, t, *, +, -, /
 
