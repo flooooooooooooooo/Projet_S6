@@ -11,7 +11,7 @@ par une methode de différence finie
 (schéma Euler explicite en temps et centré en espace)
 
 # Fichier d'entrée:   
-fichier texte qui sera selectionner dans le programme si le module tkinter
+Le fichier d'entrée est un fichier texte qui sera selectionner dans le programme si le module tkinter
 est installé, sinon il faut le mettre dans le répertoire du programme
 avec le nom "input.txt"
 le fichier doit être de la forme:
@@ -30,10 +30,14 @@ boundary_L=
 
 les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, sin, exp, t, *, +, -, /
 
-Fichiers résultats : images et vidéos dans le dossier output dans le répertoire du programme
+# Fichiers résultats :
+images et vidéos dans le dossier output dans le répertoire du programme
 
+# Pour exécuter le programme : 
+Afin d'exécuter le programme il faut utiliser la commande `python3 main.py` ou `python main.py`
 
-Pour exécuter le programme : python3 main.py ou python main.py
-
-module nécessaire : numpy, matplotlib, os, sys, math, subprocess
-module optionnel : concurrent futures, functools, tkinter
+# Module python aditionnel 
+## module nécessaire :
+numpy, matplotlib, os, sys, math, subprocess
+## module optionnel : 
+concurrent futures, functools, tkinter
