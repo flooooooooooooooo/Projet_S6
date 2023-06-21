@@ -20,31 +20,15 @@ $$
 C_{\text {init }}(x)=C_{0} \times\left(H\left(x-x_{d}\right)-H\left(x-x_{f}\right)\right)
 $$
 
-où $C_{0}$ est la concentration du polluant lors de l'injection dans le domaine, $x_{d}$ et $x_{f}$ sont les positions de début et de fin de la zone de pollution $\left(0 \leq x_{d}<x_{f} \leq L\right)$ et $H(x)$ est la fonction d'Heaviside telle que $H(x \geq 0)=1$ et $H(x<0)=0$.
+où $C_{0}$ est la concentration du polluant lors de l'injection dans le domaine, $x_{d}$ et $x_{f}$ sont les positions de début et de fin de la zone de pollution $(0 \leq x_{d}<x_{f} \leq L)$ et $H(x)$ est la fonction d'Heaviside telle que $H(x \geq 0)=1$ et $H(x<0)=0$.
 
 
 Les conditions limites en $x=0$ et $x=L$ sont des conditions de Dirichlet, à savoir $C(0, t)=f(t)$ et $C(L, t)=0$ avec $t \geq 0$ où $f$ est une fonction du temps qui sera précisée par la suite. Par défaut, $f(t)=0$. La solution numérique de ce problème est obtenue en utilisant la méthode des différences finies. Pour cela, le domaine physique de longueur $L$ et de direction $x$ est discrétisé en $N$ segments de longueur $\Delta x$, ce dernier étant appelé le pas d'espace. Ici, les $N+1$ points $x_{k}$ de calcul seront numérotés de $k=0$ à $k=N$ depuis $x_{0}=0$ jusqu'à $x_{N}=L$. Les solutions en temps sont calculées tous les $\Delta t$ depuis $t=0$ jusqu'à $t_{f}=N_{t} \Delta t$ avec $\Delta t$ appelé le pas de temps et $N_{t}$ est le nombre total de pas de temps.
 
 On souhaite tester le schéma numérique dit « explicite centré » pour résoudre cette équation.
 
-## Application de la méthode des différences finies :
 
-La méthode consiste à remplacer les dérivées temporelle et spatiale de (1) par les approximations suivantes :
-
-- schéma explicite d'Euler : $\frac{\partial C(x, t)}{\partial t}=\frac{C\left(x_{k}, t+\Delta t\right)-C\left(x_{k}, t\right)}{\Delta t}$,
-- schéma centré :
-
-$$
-\frac{\partial^{2} C(x, t)}{\partial x^{2}}=\frac{C\left(x_{k}-\Delta x, t\right)-2 C\left(x_{k}, t\right)+C\left(x_{k}+\Delta x, t\right)}{\Delta x^{2}}
-$$
-
-En injectant (3) et (4) dans (1), on obtient :
-
-$$
-\frac{C\left(x_{k}, t+\Delta t\right)-C\left(x_{k}, t\right)}{\Delta t}=D \frac{C\left(x_{k}-\Delta x, t\right)-2 C\left(x_{k}, t\right)+C\left(x_{k}+\Delta x, t\right)}{\Delta x^{2}} .
-$$
-
-L'équation (5) est résolue pas à pas ce qui veut dire qu'au moment de sa résolution le champ de concentration à l'instant $t$ est connu et l'on cherche le champ de concentration à l'instant $t+\Delta t$. En isolant les termes inconnus des termes connus, on obtient la solution en $t+\Delta t$ en fonction de celle en $t$ via :
+En utilisant un schéma Euler explicite en temps et centré en espace, on obtient la solution en $t+\Delta t$ en fonction de celle en $t$ via :
 
 $$
 \begin{array}{ll}
