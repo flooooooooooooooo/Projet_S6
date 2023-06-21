@@ -10,6 +10,9 @@ Programme de resolution d'une equation de diffusion
 par une methode de différence finie
 (schéma Euler explicite en temps et centré en espace)
 
+Équation différentielle résolue:        
+$\frac{\partial C(x,t)}{\partial t}$
+
 # Fichier d'entrée:   
 Le fichier d'entrée est un fichier texte qui sera selectionner dans le programme si le module tkinter
 est installé, sinon il faut le mettre dans le répertoire du programme
