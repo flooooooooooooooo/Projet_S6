@@ -2,7 +2,7 @@
 Alison Da Silva, Florio Avenel
 
 # Objectif :  
-Programme de resolution d'une equation de diffusion par une methode de différence finie(schéma Euler explicite en temps et centré en espace)
+Programme de résolution d'une équation de diffusion par une méthode de différence finie(schéma Euler explicite en temps et centré en espace)
 
 ## Équation différentielle de diffusion
 
@@ -49,18 +49,18 @@ $$
 
 où $C_{x 0}$ est la concentration imposée en $x=0$ du polluant et $D$ est un coefficient de diffusion (en $\mathrm{m}^{2} / \mathrm{s}$ ).
 
-Différence entre la solution exacte et la solution numérique à différent temps:
+Différence entre la solution exacte et la solution numérique à différents temps:
 ![Solution exacte et solution numérique à différent pas de temps](assets/exact_numerique.png)
 
-Le temps de la dispersion étudié ne doit pas être trop important pour éviter de trouver des solutions influencées par les conditions aux limites.
+Le temps de la dispersion étudiée ne doit pas être trop important pour éviter de trouver des solutions influencées par les conditions aux limites.
 
-De plus pour un nombre trop faible de pas d'espace la solution ne sera pas assez précise pour et une différence entre la solution exacte et la solution numérique se formera.
+De plus pour un nombre trop faible de pas d'espace la solution ne sera pas assez précise et une différence entre la solution exacte et la solution numérique se formera.
 
 Pour ce schéma numérique la valeur de R doit être inférieur à 0,5 dans le cas contraire la solution sera instable.
 
 
 # Fichier d'entrée:   
-Le fichier d'entrée est un fichier texte qui sera selectionner dans le programme si le module tkinter
+Le fichier d'entrée est un fichier texte qui sera selectionné dans le programme si le module tkinter
 est installé, sinon il faut le mettre dans le répertoire du programme
 avec le nom "input.txt"
 le fichier doit être de la forme:
@@ -83,12 +83,12 @@ les fonctions dans les deux conditions aux limites peuvent contenir: pi, cos, si
 Création de graphique:      
 ![Exemple de graphique](assets/Concentration_boundary_0.png)    
 
-Images et vidéos stocké dans le dossier output dans le répertoire du programme
+Images et vidéos stockées dans le dossier output dans le répertoire du programme
 
 
 # Pour exécuter le programme : 
 Afin d'exécuter le programme il faut utiliser la commande `python3 main.py` ou `python main.py`
 
-# Module python aditionnel 
-+ module nécessaire : numpy, matplotlib, os, sys, math, subprocess
-+ module optionnel : concurrent futures, functools, tkinter
+# Modules python aditionnels 
++ modules nécessaires : numpy, matplotlib, os, sys, math, subprocess
++ modules optionnels : concurrent futures, functools, tkinter
